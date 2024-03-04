@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package profiles;
+option go_package = "./profile";
+
+message Profile {
+  int64 id = 1;
+  string name = 2;
+  string username = 3;
+}
+
+service ProfileRetrievalService {
+
+  rpc GetProfileById(ProfileByIdRequest) returns (Profile);
+
+  rpc AddProfile(Profile) returns (ErrorResponse);
+
+}
+
+message ProfileByIdRequest {
+  int64 id = 1;
+  string username = 2;
+}
+
+message ErrorResponse {
+  string message = 1;
+}
