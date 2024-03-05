@@ -4,7 +4,6 @@ import (
 	"fmt"
 	tb "gopkg.in/tucnak/telebot.v2"
 	"os"
-	"telegram-bot-spotify/backend"
 	"telegram-bot-spotify/backend/database"
 	"telegram-bot-spotify/utils"
 )
@@ -31,7 +30,6 @@ func NewTelegramBot() error {
 	}
 
 	AllHandlers(b)
-	go backend.Init()
 	go database.Initdb()
 
 	b.Start()

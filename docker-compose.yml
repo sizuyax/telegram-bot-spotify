@@ -11,22 +11,12 @@ services:
         - "5432:5432"
     env_file:
       - ./config/.env
-  grpc:
-    build: .
-    container_name: grpc
-    ports:
-      - "50051:50051"
-    env_file:
-      - ./config/.env
-    depends_on:
-      - db_spotify
-  tgbot:
-    build:
-        context: .
-        dockerfile: Dockerfile
-    container_name: tgbot
-    env_file:
-      - ./config/.env
-    depends_on:
-      - db_spotify
-      - grpc
+  # tgbot:
+  #   build:
+  #       context: .
+  #       dockerfile: Dockerfile
+  #   container_name: tgbot
+  #   env_file:
+  #     - ./config/.env
+  #   depends_on:
+  #     - db_spotify
