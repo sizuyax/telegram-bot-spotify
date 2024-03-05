@@ -2,16 +2,17 @@ package telegram
 
 import (
 	"fmt"
-	tb "gopkg.in/tucnak/telebot.v2"
 	"telegram-bot-spotify/backend/database"
 	"time"
+
+	tb "gopkg.in/tucnak/telebot.v2"
 )
 
 func ButtonHandlers(b *tb.Bot) {
 	b.Handle(&btnSearch, func(m *tb.Message) {
 		id := m.Sender.ID
 		username := m.Sender.Username
-
+	search:
 		users := database.GetUsers()
 
 		ok := database.IsProfileExist(id)
@@ -67,15 +68,20 @@ func ButtonHandlers(b *tb.Bot) {
 				b.Send(m.Sender, "Вот твоя новая семья:", ModeHTML, &tb.SendOptions{ReplyMarkup: replyMarkup})
 			}
 		} else {
-			b.Send(m.Sender, "Ты не занесен в базу данных", ModeHTML)
-			b.Send(m.Sender, "Сейчас занесем тебя в базу данных!", ModeHTML)
+			notInBD, _ := b.Send(m.Sender, "Ты не занесен в базу данных", ModeHTML)
+			time.Sleep(2 * time.Second)
+			b.Delete(notInBD)
+			process, _ := b.Send(m.Sender, "Сейчас занесем тебя в базу данных!", ModeHTML)
 			err := database.AddProfileToDB(id, username)
 			if err != nil {
 				b.Send(m.Sender, "Ошибка при обращении к серверу")
 				return
 			}
+			time.Sleep(2 * time.Second)
+			b.Delete(process)
 			b.Send(m.Sender, "Тебя занесли в базу данных.")
-			b.Send(m.Sender, "Теперь можешь нажать на команду /search чтобы найти свою <b>семью в Spotify</b>!", ModeHTML)
+
+			goto search
 		}
 	})
 

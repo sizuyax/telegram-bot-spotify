@@ -12,7 +12,7 @@ var db *gorm.DB
 func Initdb() {
 	fmt.Println("database is running...")
 	var err error
-	dsn := "host=localhost user=admin password=pass dbname=db_spotify port=5432 sslmode=disable"
+	dsn := "host=db_spotify user=admin password=pass dbname=db_spotify port=5432 sslmode=disable"
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
