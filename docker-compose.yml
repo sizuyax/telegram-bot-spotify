@@ -1,22 +1,16 @@
 version: "3.8"
 services:
   db_spotify:
-    image: postgres:latest
+    image: postgres:13.3
     container_name: db_spotify
-    environment:
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=db_spotify
-    ports:
-        - "5432:5432"
     env_file:
-      - ./config/.env
+      - .env
   tgbot:
      build:
          context: .
          dockerfile: Dockerfile
      container_name: tgbot
      env_file:
-       - ./config/.env
+       - .env
      depends_on:
        - db_spotify
